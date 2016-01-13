@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import click
+import json
 from rabbitmqStats import rabbitmqStats
 from _config import VERSION
 import time
@@ -45,6 +46,7 @@ def main(host, port, url, user, pwd, filename, console):
                     '%a %d %b %H:%M:%S %Z %Y',
                     time.localtime(rbq.timestamp)
                 )
+                stats = json.dumps(stats)
                 if filename:
                     with click.open_file(filename, 'a') as myfile:
                         myfile.write("{0}\n".format(stats))
