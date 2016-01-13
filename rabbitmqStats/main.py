@@ -18,11 +18,13 @@ import sys
               help='Specify RabbitMQ user (default = guest)')
 @click.option('--pwd', default='guest',
               help='Specify RabbitMQ passwrd (default = guest)')
+@click.option('--polling', default=1,
+              help='Specify time (secs) to gather queue stats (default = 1)')
 @click.option('--console/--no-console', default=True,
               help='Write output to console (default = --console)')
 @click.option('--filename', help='Specify file to log to')
 @click.version_option(version='', message="Version: {}".format(VERSION))
-def main(host, port, url, user, pwd, filename, console):
+def main(host, port, url, user, pwd, filename, console, polling):
     # Description for --help
     ""
     while True:
@@ -37,7 +39,7 @@ def main(host, port, url, user, pwd, filename, console):
             print "ERROR: Invalid (one or more) 'url', 'user', 'pass' setting"
             sys.exit()
 
-        time.sleep(1)
+        time.sleep(polling)
 
         for que in queues:
             if type(rbq.queue_msg_stats(que)) is not str:
