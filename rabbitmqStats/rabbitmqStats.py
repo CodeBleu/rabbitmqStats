@@ -40,18 +40,17 @@ class rabbitmqStats():
         return qs
 
     def __walk_json(self, node):
-        stat_data = []
+        stat_data = {}
         for key, item in node.items():
             if isinstance(item, dict):
                 if 'rate' in item:
-                    stat_data.append(
-                        ("{}:{}".format(key, item['rate'])).split(":")
-                    )
+                    stat_data[str(key)] = int(item['rate'])
                 else:
                     self.__walk_json(item)
             else:
-                stat_data.append(("{}:{}".format(key, item)).split(":"))
+                stat_data[str(key)] = int(item)
 
+        return stat_data
         return dict(stat_data)
 
     def queue_msg_stats(self, name):
